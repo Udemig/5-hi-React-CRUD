@@ -38,27 +38,15 @@
         > o elemanı çıkar ve yerine yenisini ekle
     </li>
 
+    <li>
+        5- Düzenleme İşlemini Yap:
+        > Düzenle butonuna tıklanıdğında ekrana bir modal çıksın
+        > ve düzenlenicek kitabı app.jse aktarsın (editItem)
+        > Modalda: Kitap ismini değiştirmek için bir input
+        > input her değiştiğinde editItem değişkenini günceller ve app.jse aktarır
+        > Vazgeç Butonu > Modalı Kapatır
+        > Kaydet Butonu > app.jsde bulunan handleEditBook çalıştırır
+        > çalışan fonkisyon diziden eski elemanı çıkarır yerine yenisini koyar
+    </li>
+
 </ul>
-
-silinecek = 4
-filtrele idsi silinecekId ye eşit olmayanları al
-
-<!-- dışarısı -->
-
-<!-- dizi -->
-
-[
-{
-id:1
-isRead: true
-}
-{
-id:2
-}
-{
-id:3
-}
-{
-id:4
-}
-]

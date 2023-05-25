@@ -1,4 +1,11 @@
-const BookCard = ({ book, handleDelete, handleRead, handleModal }) => {
+const BookCard = ({
+  book,
+  handleDelete,
+  handleRead,
+  handleModal,
+  setEditItem,
+  setShowEditModal,
+}) => {
   return (
     <div className="d-flex border shadow p-3 justify-content-between align-items-center">
       <div>
@@ -15,7 +22,17 @@ const BookCard = ({ book, handleDelete, handleRead, handleModal }) => {
         <button className="btn btn-danger" onClick={() => handleModal(book.id)}>
           Sil
         </button>
-        <button className="btn btn-primary">Düzenle</button>
+        <button
+          className="btn btn-primary"
+          onClick={() => {
+            // güncellenicek kitabı app.js e gönder
+            setEditItem(book);
+            // modalı aç
+            setShowEditModal(true);
+          }}
+        >
+          Düzenle
+        </button>
         <button className="btn btn-success" onClick={() => handleRead(book)}>
           {book.isRead ? 'Okundu' : 'Okunmadı'}
         </button>

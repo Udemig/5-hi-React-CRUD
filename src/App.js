@@ -1,16 +1,26 @@
 import { useState } from 'react';
 import BookCard from './components/BookCard';
 import { toast } from 'react-toastify';
+import EditModal from './components/EditModal';
 
 function App() {
   const [bookName, setBookName] = useState('');
   const [books, setBooks] = useState([]);
   const [showConfirm, setShowConfirm] = useState(false);
   const [deleteId, setDeleteId] = useState(null);
+  const [showEditModal, setShowEditModal] = useState(false);
+  const [editItem, setEditItem] = useState(null);
 
   // ekle butonuna tıklandığı anda çalışır
   const handleSubmit = (e) => {
     e.preventDefault();
+
+    if (!bookName) {
+      // bildirim verme
+      toast.warn('Lütfen Kitap İsmi Giriniz', { autoClose: 2000 });
+      // fonksiyonu durdurma
+      return;
+    }
 
     // kitap için gerekli bilgilere sahip obje oluşturma
     const newBook = {
@@ -69,11 +79,28 @@ function App() {
     setBooks(cloneBooks);
   };
 
+  // kitabı günceller
+  const handleEditBook = () => {
+    // değişicek elemanın dizideki sırasını bulur
+    const index = books.findIndex((book) => book.id === editItem.id);
+
+    // kitaplar dizisinin kopyasını oluşturma
+    const cloneBooks = [...books];
+
+    //eski kitabı diziden çıkar yerine yenisini koy
+    cloneBooks.splice(index, 1, editItem);
+
+    // statei güncelle > kopya diziyi state aktar
+    setBooks(cloneBooks);
+
+    // modalı kapat
+    setShowEditModal(false);
+  };
+
   return (
     <div>
       {/* header */}
       <div className="bg-dark text-light px-5 py-2 fs-5 text-center">Kitap Kurdu</div>
-
       <div className="container border">
         {/* form */}
         <form onSubmit={handleSubmit} className="d-flex gap-3 mt-4">
@@ -97,24 +124,42 @@ function App() {
               book={book}
               handleModal={handleModal}
               handleRead={handleRead}
+              setShowEditModal={setShowEditModal}
+              setEditItem={setEditItem}
             />
           ))}
         </div>
       </div>
+
       {/* modalı tanımlama */}
       {showConfirm && (
-        <div>
-          <h5>Silmek İstiyor musunuz ?</h5>
-          <button onClick={() => setShowConfirm(false)}>Vazgeç</button>
-          <button
-            onClick={() => {
-              handleDelete(deleteId);
-              setShowConfirm(false);
-            }}
-          >
-            Onayla
-          </button>
+        <div className="confirm-modal">
+          <div className="modal-inner shadow">
+            <h5>Silmek İstiyor musunuz ?</h5>
+            <button className="btn btn-warning" onClick={() => setShowConfirm(false)}>
+              Vazgeç
+            </button>
+            <button
+              className="btn btn-danger"
+              onClick={() => {
+                handleDelete(deleteId);
+                setShowConfirm(false);
+              }}
+            >
+              Onayla
+            </button>
+          </div>
         </div>
+      )}
+
+      {/* düznelme modalı */}
+      {showEditModal && (
+        <EditModal
+          setShowEditModal={setShowEditModal}
+          setEditItem={setEditItem}
+          editItem={editItem}
+          handleEditBook={handleEditBook}
+        />
       )}
     </div>
   );
